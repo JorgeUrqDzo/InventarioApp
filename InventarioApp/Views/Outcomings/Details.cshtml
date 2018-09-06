@@ -1,0 +1,36 @@
+﻿@model InventarioApp.Models.OutcomingProduct
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>OutcomingProduct</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OutcomingDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OutcomingDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Porduct)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Porduct.Code)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

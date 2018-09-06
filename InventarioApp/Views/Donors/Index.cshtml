@@ -1,0 +1,73 @@
+﻿@model IEnumerable<InventarioApp.Models.Donor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Donadores</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Registrar Donador</a>
+</p>
+<hr />
+<div class="row">
+    <div class="col-md-6 pull-left">
+
+        <a asp-action="Donations" target="_blank" class="btn btn-default">
+            <span class="glyphicon glyphicon-file"></span>
+            Generar Reporte PDF
+        </a>
+
+    </div>
+    <div class="col-md-6 pull-right">
+        <form asp-action="Index" class="form-inline pull-right">
+            <input type="search" name="Name" class="form-control" placeholder="Donador" value="@ViewBag.name" />
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+                Buscar
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MotherLastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotherLastName)
+                </td>
+                <td>
+                    <a asp-action="Create" asp-controller="Incomings" asp-route-donorId="@item.Id" class="btn btn-default">Registrar Donación</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default">Editar</a>
+                    <a asp-action="DonationsByDonor" asp-route-id="@item.Id" class="btn btn-default" target="_blank">Donaciones PDF</a>
+                    @*<a asp-action="Details" asp-route-id="@item.Id">Details</a>*@
+                    @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

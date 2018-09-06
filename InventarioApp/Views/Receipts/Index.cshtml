@@ -1,0 +1,47 @@
+﻿@model IEnumerable<InventarioApp.Models.Receipt>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Recibos</h2>
+
+<div class="col-md-6 pull-right">
+    <form asp-action="Index" class="form-inline pull-right">
+        <input type="search" name="Name" class="form-control" placeholder="Nombre" value="@ViewBag.name" />
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span>
+            Buscar
+        </button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Beneficiary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beneficiary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <a class="btn btn-default" target="_blank" asp-controller="Outcomings" asp-action="OutcomingsPdf" asp-route-id="@item.Id">Ver Recibo PDF</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

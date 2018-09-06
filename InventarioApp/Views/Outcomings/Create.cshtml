@@ -1,0 +1,218 @@
+﻿@model InventarioApp.Models.OutcomingProduct
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Registrar</h2>
+
+<h4>Salida de producto</h4>
+<hr />
+<div class="row">
+    @*<div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ProductId" class="control-label"></label>
+                    <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Quantity" class="control-label"></label>
+                    <input asp-for="Quantity" class="form-control" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                    <span class="text-danger">@ViewBag.lessExistences</span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OutcomingDate" class="control-label"></label>
+                    <input asp-for="OutcomingDate" class="form-control" />
+                    <span asp-validation-for="OutcomingDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>*@
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Entregado a:</label>
+                    <input class="form-control" id="personName" type="text" name="personName" value="" placeholder="Nombre Completo del Beneficiario" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <input type="button" id="btnSave" value="Guadar Salida de Producto" class="btn btn-primary form-control" />
+                </div>
+            </div>
+        </div>
+        <form id="addForm" action="">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ProductId" class="control-label"></label>
+                        <select asp-for="ProductId" id="productId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" id="quantity" class="form-control" placeholder="Cantidad de producto" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                        <span class="text-danger">@ViewBag.lessExistences</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <input type="button" id="btnAdd" value="Agregar Producto" class="btn btn-primary form-control" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Producto</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="productsTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="products">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        (function () {
+            var products_added = [];
+
+            $(document).on('submit', '#addForm', function (e) {
+                e.preventDefault();
+            });
+            $(document).on("click", "#btnAdd", function () {
+                var product = $("#productId").val();
+                var product_name = $("#productId :selected").text();
+                var qty = $("#quantity").val();
+
+                if (!isNaN(qty) && qty > 0) {
+                    checkProductExistence(product, qty, function (response) {
+                        if (response) {
+                            products_added.push(
+                                {
+                                    ProductId: product,
+                                    Quantity: qty
+                                });
+
+                            addProductToTable(product, product_name, qty);
+
+                            $("#quantity").val('');
+                            $("#productId").prop("selectedIndex", 0);
+                        } else {
+                            alert('No se cuenta con la cantidad suficientes de productos')
+                        }
+                    })
+                    
+                } else {
+                    alert('Debe elegir una cantidad valida.');
+
+                }
+            });
+
+            function checkProductExistence(productId, qty, fun) {
+
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("CheckProductExistence", "Outcomings")",
+                    data: { productId: productId, qty: qty },
+                    statusCode: {
+                        204: function () {
+                            return fun(false);
+                        },
+                        200: function () {
+                            return fun(true);
+                        }
+                    }
+                })
+            }
+            function addProductToTable(product, product_name, qty) {
+                var row = `<tr>
+                                        <td>${product_name}</td>
+                                        <td>${qty}</td>
+                                        <td>
+                                            <button class='btn btn-danger btnRemove' data-p='${product}' data-q='${qty}'>
+                                                <span class='glyphicon glyphicon-trash'></span>
+                                            </button>
+                                        </td>
+                                   </tr>`;
+
+                $("#productsTable").append(row);
+            }
+
+            $(document).on("click", ".btnRemove", function () {
+                var product = $(this).data('p');
+                var qty = $(this).data('q');
+                $(this).parent().parent().remove();
+
+                $.each(products_added, function (index, value) {
+                    if (value.ProductId == product && value.Quantity == qty) {
+                        products_added.splice(index, 1);
+                        return false;
+                    }
+                });
+            });
+
+            $(document).on('click', "#btnSave", function () {
+                var person = $("#personName").val().trim();
+
+                var personValid = person != undefined && person != '';
+
+                if (personValid && products_added.length > 0) {
+                    // Guardar
+                    $.ajax({
+                        method: "POST",
+                        url: "@Url.Action("Create", "Outcomings")",
+                        data: { outcomingProducts: products_added, person: person },
+                        statusCode: {
+                            200: function (data) {
+                                console.log(data);
+                                var url = "@Url.Action("OutcomingsPdf", "Outcomings")";
+
+                                window.open(url + "/" + data);
+
+                                location.replace("@Url.Action("index", "Outcomings")");
+                            }
+                        }
+                    });
+                } else {
+                    var msj = '';
+                    if (!personValid && products_added.length <= 0) {
+                        msj = "Debe ingresar el nombre completo del beneficiario y agregar por lo menos 1 producto.";
+                    }
+                    else {
+                        if (!personValid) {
+                            msj = "Debe ingresar el nombre completo del beneficiario";
+                        }
+                        else if (products_added.length <= 0) {
+                            msj = "Debe agregar por lo menos 1 producto";
+                        }
+                    }
+
+                    alert(msj);
+                }
+            })
+        })();
+    </script>
+}

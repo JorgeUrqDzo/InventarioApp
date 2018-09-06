@@ -1,0 +1,129 @@
+﻿@model InventarioApp.Models.ReceiptsViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inventario</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    *@
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <img src="~/images/logo/logo.png" alt="Logo" width="180" />
+            </div>
+            <div class="col-xs-6">
+                <p class="text-right" style="padding: 70px;">
+                    @Model.Fecha
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center">RECIBO </h2>
+            </div>
+        </div>
+
+        <hr />
+        @*<h4>Yo, <u>@Model.Recibo.Beneficiary</u> Recibi los siguientes productos de la boutique del Centro de Justicias para las Mujeres: </h4>*@
+        <p class="text-justify">
+            La ciudadana <b>@Model.Recibo.Beneficiary</b> recibe del Centro de Justicia para las Mujeres del Estado de Sonora las prendas desglosadas en la parte inferior de este documento.
+        <p />
+        <p class="text-justify">
+            Las prendas que se brindan son en virtud del Plan de Empoderamiento a la Mujer, con la finalidad de acudir a su primera entrevista laboral.
+        </p>
+        <p class="text-justify">
+            Así mismo  <b>@Model.Recibo.Beneficiary</b> asume el compromiso de informar al Centro de Justicia para las Mujeres, respecto a los resultados de su primera entrevista laboral, si consiguió o no el empleo, como se ha desempeñado en el mismo, posibles ascensos y en caso de que desee concluir con el contrato laboral nos lo hará saber, todo lo anterior para efecto de conocer los motivos y si en alguno de ellos se le puede brindar otros apoyos.<br /><br />
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Cantidad
+                    </th>
+                    <th>
+                        Producto
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.productos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Total)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <p class="text-center">
+                    <b>FIRMA</b>
+                </p>
+            </div>
+            <div class="col-xs-4"></div>
+        </div>
+        <div class="row" style="margin-top: 30px">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6">
+                <p class="text-center">
+                    @{
+                        string line = "_";
+                    }
+
+                    @for (int i = 0; i < 54; i++)
+                    {
+                        @line
+                    }
+                </p>
+            </div>
+            <div class="col-xs-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <p class="text-center">
+                    <b>@Model.Recibo.Beneficiary</b>
+                </p>
+            </div>
+            <div class="col-xs-4"></div>
+        </div>
+    </div>
+</body>
+</html>

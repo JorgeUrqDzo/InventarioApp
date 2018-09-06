@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon>Icon_App.ico</ApplicationIcon>
+    <Win32Resource />
+    <PackageIconUrl>if_document-03_1622833.ico</PackageIconUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20180802183651_Donors.cs" />
+    <Compile Remove="Migrations\20180802184955_DeliveriesAndReceipts.cs" />
+    <Compile Remove="Migrations\20180802185348_DeliveriesAndReceipts.cs" />
+    <Compile Remove="Migrations\20180802185503_DeliveriesAndReceipts.cs" />
+    <Compile Remove="Migrations\20180802185559_DeliveriesAndReceipts.cs" />
+    <Compile Remove="Migrations\20180805203053_donorFieldOnDonations.cs" />
+    <Compile Remove="Migrations\20180805203322_donorFieldOnDonations.cs" />
+    <Compile Remove="Migrations\20180805203508_donorFieldOnDonations.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icon_App.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Rotativa\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Icon_App.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

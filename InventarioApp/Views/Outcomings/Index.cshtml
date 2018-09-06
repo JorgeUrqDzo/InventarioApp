@@ -1,0 +1,64 @@
+﻿@model IEnumerable<InventarioApp.Models.OutcomingProduct>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Salidas de Producto</h2>
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+<hr />
+<div class="row">
+    <div class="col-md-6 pull-left">
+        <a asp-action="ReportPdf" target="_blank" class="btn btn-default">
+            <span class="glyphicon glyphicon-file"></span>
+            Generar Reporte PDF
+        </a>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Porduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Porduct.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OutcomingDate)
+            </th>
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Porduct.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Porduct.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OutcomingDate)
+                </td>
+
+                @*<td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

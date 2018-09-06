@@ -1,0 +1,93 @@
+﻿@model IEnumerable<InventarioApp.Models.Product>
+
+@{
+    ViewData["Title"] = "INVENTARIO";
+}
+
+<h2>INVENTARIO ACTUAL <span class="small">@ViewBag.granTotal  productos</span></h2>
+
+<p>
+
+</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-6 pull-left">
+        <a asp-action="Create" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+            Nuevo Producto
+        </a>
+
+        <a asp-controller="Outcomings" asp-action="Create" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+            Registrar Multiples Salidas
+        </a>
+
+        @if (Model.Count() > 0)
+        {
+            <a asp-action="ProductsPdf" target="_blank" class="btn btn-default">
+                <span class="glyphicon glyphicon-file"></span>
+                Generar Reporte PDF
+            </a>
+        }
+
+    </div>
+    <div class="col-md-6 pull-right">
+        <form asp-action="Index" class="form-inline pull-right">
+            <input type="search" name="Code" class="form-control" placeholder="Código" value="@ViewBag.code" />
+            <input type="search" name="Name" class="form-control" placeholder="Nombre" value="@ViewBag.name" />
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+                Buscar
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/@item.Image" class="img-responsive img-thumbnail" width="80" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @*<a class="btn btn-default" asp-controller="Incomings" asp-action="Create" asp-route-id="@item.Id">Registrar Entrada</a>
+                    <a class="btn btn-default" asp-controller="Outcomings" asp-action="Create" asp-route-id="@item.Id">Registrar Salida</a>*@
+                    <a class="btn btn-default" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
